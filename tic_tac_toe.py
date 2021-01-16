@@ -1,149 +1,143 @@
-from random import randint
 
-positions = {'tl':" ", 'tc':" ", 'tr':" ", 'cl':" ", 'cc':" ", 'cr': " ", 'bl':" ", 'bc':" ", 'br':" "}
-human = ""
-computer = ""
-win_condition = False
+import random
 
-def display_board():
-    board = [" " + positions['tl'] + " | " + positions['tc'] + " | " + positions['tr'], "---|---|---",
-     " " + positions['cl'] + " | " + positions['cc'] + " | " + positions['cr'], "---|---|---",
-      " " + positions['bl'] + " | " + positions['bc'] + " | " + positions['br']]
-    for row in board:
-        print(row)
+def showBoard():
+  print(' ' + board[6] + ' | ' + board[7] + ' | ' + board[8] + ' ')
+  print('-----------')
+  print(' ' + board[3] + ' | ' + board[4] + ' | ' + board[5] + ' ')
+  print('-----------')
+  print(' ' + board[0] + ' | ' + board[1] + ' | ' + board[2] + ' ')
 
-def select_piece():
-    global human
-    global computer
-    select = input("Would you like to be 'X' or 'O'? 'X' goes first.")
-    if select.upper() == 'X':
-        human = select.upper()
-        computer = "O"
-        print("Great! You will be " + select.upper() + '.')
-    elif select.upper() == 'O':
-        human = select.upper()
-        computer = 'X'
-        print("Great! You will be " + select.upper() + '.')
-        print("The computer will go first.")
+def cTurn():
+  move = random.randint(0,8)
+  while board[move] != 'X' or 'O':
+    if board[move] == ' ':
+      board[move] = cpiece
+      break
     else:
-        print("Please select 'X' or 'O'.")
-        select_piece()
+      move = random.randint(0,8)
 
-def human_turn():
-    global human
-    turn = input("Please choose a square. tl is top left, cr is center right etc.")
-    try:
-        positions[turn]
-    except KeyError:
-        print("That move is invalid.")
-        human_turn()
-    if positions[turn] == " ":
-        positions[turn] = human
+def hTurn():
+  move = int(input("\nMake your move! Choose a space between 0 and 8.\n"))
+  while board[move] != 'X' or 'O':
+    if board[move] == ' ':
+      board[move] = hpiece
+      break
     else:
-        print('That move is invalid')
-        human_turn()
-    display_board()
+      move = int(input("That space has already been taken! Choose a space between 0 and 8.\n"))
+
+def winGame():
+  if all(board[play] == hpiece for play in range(6,8)):
+    print("\nYou win!\n")
+    showBoard()
+    return True
+  elif all(board[play] == hpiece for play in range(3,5)):
+    print("\nYou win!\n") 
+    showBoard()
+    return True
+  elif all(board[play] == hpiece for play in range(0,2)):
+    print("\nYou win!\n") 
+    showBoard()
+    return True
+  elif all(board[play] == hpiece for play in (0,3,6)):
+    print("\nYou win!\n")
+    showBoard()
+    return True
+  elif all(board[play] == hpiece for play in (1,4,7)):
+    print("\nYou win!\n")
+    showBoard()
+    return True
+  elif all(board[play] == hpiece for play in (2,5,8)):
+    print("\nYou win!\n")
+    showBoard()
+    return True
+  elif all(board[play] == hpiece for play in (2,4,6)):
+    print("\nYou win!\n")
+    showBoard()
+    return True
+  elif all(board[play] == hpiece for play in (0,4,8)):
+    print("\nYou win!\n")
+    showBoard()
+    return True
+  elif all(board[play] == cpiece for play in range(6,8)):
+    print("\nHa! I win!\n")
+    showBoard()
+    return True
+  elif all(board[play] == cpiece for play in range(3,5)):
+    print("\nHa! I win!\n")
+    showBoard()
+    return True
+  elif all(board[play] == cpiece for play in range(0,2)):
+    print("\nHa! I win!\n")
+    showBoard()
+    return True
+  elif all(board[play] == cpiece for play in (0,3,6)):
+    print("\nHa! I win!\n")
+    showBoard()
+    return True
+  elif all(board[play] == cpiece for play in (1,4,7)):
+    print("\nHa! I win!\n")
+    showBoard()
+    return True
+  elif all(board[play] == cpiece for play in (2,5,8)):
+    print("\nHa! I win!\n")
+    showBoard()
+    return True
+  elif all(board[play] == cpiece for play in (2,4,6)):
+    print("\nHa! I win!\n")
+    showBoard()
+    return True
+  elif all(board[play] == cpiece for play in (0,4,8)):
+    print("\nHa! I win!\n")
+    showBoard()
+    return True
     
-def computer_turn():
-    global computer
-    positions_list = list(positions)
-    turn = randint(0,8)
-    play = positions_list[turn]
-    if positions[play] == " ":
-        positions[play] = computer
-    else:
-        computer_turn()
-    print("The computer has chosen the square below.")
-    display_board()
+  
+print("""
+_____ *  __    _____   _    __     _____  __   ___
+  |   | |   _    |    |_|  |    _    |   |  | |___
+  |   | |__      |   |   | |__       |   |__| |___
+  """)
 
-def win():
-    global human
-    global win_condition
-    if positions['tl'] == positions['tc'] == positions['tr'] != " ":
-        if human == positions['tl']:
-            print("You win!")
-        else:
-            print("Sorry, you lose!")
-        win_condition = True
-    elif positions['cl'] == positions['cc'] == positions['cr'] != " ":
-        if human == positions['cl']:
-            print("You win!")
-        else:
-            print("Sorry, you lose!")
-        win_condition = True
-    elif positions['bl'] == positions['bc'] == positions['br'] != " ":
-        if human == positions['bl']:
-            print("You win!")
-        else:
-            print("Sorry, you lose!")
-        win_condition = True
-    elif positions['tl'] == positions['cl'] == positions['bl'] != " ":
-        if human == positions['tl']:
-            print("You win!")
-        else:
-            print("Sorry, you lose!")
-        win_condition = True
-    elif positions['tc'] == positions['cc'] == positions['bc'] != " ":
-        if human == positions['tc']:
-            print("You win!")
-        else:
-            print("Sorry, you lose!")
-        win_condition = True
-    elif positions['tr'] == positions['cr'] == positions['br'] != " ":
-        if human == positions['tr']:
-            print("You win!")
-        else:
-            print("Sorry, you lose!")
-        win_condition = True   
-    elif positions['tl'] == positions['cc'] == positions['tr'] != " ":
-        if human == positions['tl']:
-            print("You win!")
-        else:
-            print("Sorry, you lose!")
-        win_condition = True
-    elif positions['bl'] == positions['cc'] == positions['tr'] != " ":
-        if human == positions['bl']:
-            print("You win!")
-        else:
-            print("Sorry, you lose!")
-        win_condition = True
+board = [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ']
 
-def play_again():
-    again = input("Would you like to play again? Y/N: ")
-    print(again)
-    print(again.upper())
-    if again.upper() == 'Y':
-        main_game()
-    elif again.upper() == 'N':
-        pass
-    else:
-        print('What was that?')
-        play_again()
+hpiece = ''
+cpiece = ''
+while hpiece != 'X' or 'O':
+  hpiece = input("\n'X' or 'O'?")
+  if hpiece == 'x':
+    hpiece = 'X'
+    cpiece = 'O'
+    break
+  elif hpiece == 'o':
+    hpiece = 'O'
+    cpiece = 'X'
+    break
+  else:
+    print("\nYou may only choose 'X' or 'O'.")
+  
+flip = random.randint(0,1)
+if flip == 0:
+  print('\nYou go first.\n')
+  showBoard()
+else:
+  print("\nI'll go first.\n")
 
-def main_game():
-    global win_condition
-    title = "TIC-TAC-TOE!"
-    print(title)
-    select_piece()
-    while win_condition == False:
-        if human == 'X':
-            human_turn()
-            win()
-            if win_condition == True:
-                break                    
-            computer_turn()
-            win()
-            if win_condition == True:
-                break
-        else:
-            computer_turn()
-            win()
-            if win_condition == True:
-                break
-            human_turn()
-            win()
-            if win_condition == True:
-                break
-    play_again()
+count = 0
+while count < 9:
+  if flip == 0:
+    hTurn()
+    if winGame() == True:
+      break
+    count = count + 1
+    flip = 1
+  elif flip == 1:
+    cTurn()
+    showBoard()
+    if winGame() == True:
+      break
+    count = count + 1
+    flip = 0
 
-main_game()
+if count == 8:
+  print("It's a tie.")
